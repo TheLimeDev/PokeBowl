@@ -1,9 +1,9 @@
 class Pokebowl < Formula
   desc "Background runner for coding agents"
   homepage "https://github.com/TheLimeDev/PokeBowl"
-  url "https://github.com/TheLimeDev/PokeBowl/releases/download/v0.1.0/pokebowl-0.1.0.tar.gz"
-  sha256 "fb17696444259007a1a1735288b47b8606d14f4fb379884b22a584be4d271ff5"
-  version "0.1.0"
+  url "https://github.com/TheLimeDev/PokeBowl/releases/download/v0.1.1/pokebowl-0.1.1.tar.gz"
+  sha256 "effe8f19500b441f7b73e2caf4eace55545a909fceed98cd143ecf7ab31ac7c5"
+  version "0.1.1"
   depends_on "python@3.12"
 
   def install
