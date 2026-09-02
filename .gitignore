@@ -1,0 +1,4 @@
+.pokebowl/
+__pycache__/
+*.pyc
+runs/
