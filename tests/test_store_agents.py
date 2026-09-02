@@ -45,6 +45,23 @@ class AgentsTest(unittest.TestCase):
     def test_resolve_raw_command(self):
         self.assertEqual(agents.resolve("t", command="make build"), "make build")
 
+    def test_resolve_openclaw_uses_workdir(self):
+        cmd = agents.resolve("fix login", agent="openclaw", workdir="C:\\work\\site")
+        self.assertIn("openclaw agent exec", cmd)
+        self.assertIn("C:\\work\\site", cmd)
+
+    def test_resolve_pi_print_mode(self):
+        self.assertEqual(agents.resolve("audit this", agent="pi"), 'pi -p "audit this"')
+
+    def test_detect_shape(self):
+        found = agents.detect()
+        self.assertEqual(set(found.keys()), set(agents.names()))
+        for info in found.values():
+            self.assertIn("installed", info)
+            self.assertIn("version", info)
+            self.assertIn("hint", info)
+        self.assertTrue(found["echo"]["installed"])
+
 
 if __name__ == "__main__":
     unittest.main()

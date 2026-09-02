@@ -3,17 +3,19 @@ import json
 import sys
 
 from . import VERSION
-from .agents import names, resolve
+from .agents import detect, names, resolve
 from .daemon import alive, loop, read_pid, start, stop
 from .runner import run_one
 from .store import base_dir, find_task, load_tasks, next_id, now_iso, pick_pending, save_tasks
 
 
 def cmd_add(args):
+    import os
     root = base_dir(args.dir)
     tasks = load_tasks(root)
     title = args.title.strip()
-    shell = resolve(title, agent=args.agent, extra=args.extra, command=args.command)
+    shell = resolve(title, agent=args.agent, extra=args.extra,
+                    command=args.command, workdir=os.path.dirname(root))
     tid = next_id(tasks)
     tasks.append({
         "id": tid,
@@ -130,6 +132,20 @@ def cmd_rm(args):
     return 0
 
 
+def cmd_agents(args):
+    import json as _json
+    found = detect()
+    if args.json:
+        print(_json.dumps(found, indent=2))
+        return 0
+    for name in names():
+        info = found[name]
+        mark = "yes" if info["installed"] else "no "
+        tail = f' {info["version"]}' if info["version"] else ""
+        print(f"{mark} {name}{tail} -- {info['hint']}")
+    return 0
+
+
 def build_parser():
     p = argparse.ArgumentParser(prog="pokebowl", description="Background runner for coding agents")
     p.add_argument("--dir", default=None, help="queue directory parent (default: cwd)")
@@ -171,6 +187,10 @@ def build_parser():
     m = sub.add_parser("rm", help="remove a task")
     m.add_argument("id")
     m.set_defaults(func=cmd_rm)
+
+    v = sub.add_parser("agents", help="show which agents are installed")
+    v.add_argument("--json", action="store_true")
+    v.set_defaults(func=cmd_agents)
 
     z = sub.add_parser("_daemon", help=argparse.SUPPRESS)
     z.set_defaults(func=lambda a: loop(base_dir(a.dir)))
