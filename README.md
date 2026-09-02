@@ -60,7 +60,13 @@ pokebowl add "migrate the db utils" --agent codex
 pokebowl add "clean up imports" --agent aider
 ```
 
-Supported names: `echo`, `claude`, `codex`, `aider`, `opencode`, `cursor`. The agent program itself still needs to be on your machine — PokeBowl just runs it for you in the background and keeps the receipt.
+Supported names: `echo`, `claude`, `codex`, `aider`, `opencode`, `cursor`, `openclaw`, `pi`. The agent program itself still needs to be on your machine — PokeBowl just runs it for you in the background and keeps the receipt.
+
+OpenClaw runs headless through `agent exec` with your project folder as its workspace. Pi runs through print mode, answering once and exiting. See which ones you have before queueing:
+
+```
+pokebowl agents
+```
 
 List, retry, and remove work the way you'd expect:
 
