@@ -77,6 +77,16 @@ pokebowl rm 3
 pokebowl list --json
 ```
 
+## Leaving your laptop
+
+`up` survives closing the terminal, not closing the laptop. Sleep freezes everything on your machine, PokeBowl included. If you want jobs running overnight, run the daemon somewhere that stays awake — a small server, a home PC, anything that doesn't sleep:
+
+```
+pokebowl --dir ~/site up
+```
+
+Queue from your laptop, read the logs whenever. And if the daemon ever dies mid-task, the next `up` puts that task back in line by itself.
+
 ## Where things live
 
 Everything sits in `.pokebowl/` inside the folder where you run it:
