@@ -78,8 +78,21 @@ def stop(root):
         pass
 
 
+def requeue_stale(root):
+    tasks = load_tasks(root)
+    dirty = False
+    for t in tasks:
+        if t.get("status") == "running":
+            t["status"] = "pending"
+            dirty = True
+    if dirty:
+        save_tasks(root, tasks)
+    return dirty
+
+
 def loop(root):
     ensure_layout(root)
+    requeue_stale(root)
     while True:
         task = pick_pending(load_tasks(root))
         if task is None:
